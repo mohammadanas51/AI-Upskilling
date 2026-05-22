@@ -22,8 +22,34 @@ def getObjectsById(id):
     except Exception as e :
         print("Something went wrong ", e)
 
+def insertNewDevice():
+    try :
+        url = f"{baseURL}/objects"
+        dataToInsert = {
+            "name": "Dell G15 3350",
+            "data": {
+                "year": 2026,
+                "price": 787987,
+                "CPU model": "Inter I10 ",
+                "Hard disk size": "12TB"
+            }
+        }
+        response = requests.post(url, json=dataToInsert)
+        print("Raw API Response", response)
+        jsonResponse = response.json()
+        print("JSON Response ", jsonResponse)
+    except Exception as e :
+        print("Something went wrong ", e)
+
+
 def main():
-    id = input("Enter the device's Id ")
-    getObjectsById(id)
+    print("1. Get Device By Id")
+    print("2. Insert New Device")
+    choice = int(input("Enter your choice: "))
+    if(choice == 1):
+        id = input("Enter the device's Id ")
+        getObjectsById(id)
+    elif(choice == 2):
+        insertNewDevice()
 
 main()
