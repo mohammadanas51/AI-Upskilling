@@ -11,13 +11,16 @@ def getObjectsById(id):
             jsonResponse = response.json()
             print("JSON response", jsonResponse)
             print("Device Name ", jsonResponse["name"])
-            capacityExists = jsonResponse.get("data", {}).get("Capacity")
-            if capacityExists:
-                print("Device Capacity ", jsonResponse["data"]["Capacity"])
-            else:
-                print("Other data ", jsonResponse["data"])
-    except:
-        print("Something went wrong ")
+            otherInfo = jsonResponse.get("data", {})
+            print("Other info ")
+            for key, values in otherInfo.items():
+                print(f"{key} - {values}")
+        elif response.status_code == 404:
+            print("No device found for the given id")
+        else:
+            print("Unexpected error", response.status_code)
+    except Exception as e :
+        print("Something went wrong ", e)
 
 def main():
     id = input("Enter the device's Id ")
