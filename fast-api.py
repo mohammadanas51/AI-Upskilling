@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
 from typing import List
+from fastapi import HTTPException
 
 app = FastAPI()
 
@@ -33,13 +34,15 @@ def updateTea(teaId:int, updatedTea:Tea):
             teas[index] = updatedTea
             return updatedTea
     # This is incase the loop did not find the matching Tea id
-    return {"message" : "Tea not found"}
-
+    raise HTTPException(status_code = 404, detail="Tea not found")
 @app.delete("/teas/{teaId}")
 def deleteTea(teaId:int):
     for index,tea in enumerate(teas):
         if tea.id == teaId:
             deleted = teas.pop(index)
-            return deleted
+            return{
+                "message": "Following tea has been successfully deleted",
+                "deletedTea": deleted
+            }
     # This is incase the loop did not find the matching Tea id
-    return {"message": "Tea not found"}
+    raise HTTPException(status_code=404, detail="Tea not found")
